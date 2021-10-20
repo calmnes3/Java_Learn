@@ -765,6 +765,347 @@ int[] a = new int[100];
 
 > 注释：int[] a;  或  int a[];
 
+##### 1.8.1 for each循环
+
+​	for each循环语句的循环变量将会遍历数组中的每个元素，而不需要使用下标值。
+
+> Arrays类的toString方法：调用Arrays.toString(a),返回一个包含数组元素的字符串。这些元素被放置在括号内,并用逗号隔开，例如，“[2,3,5,11,13]”.要想打印数组，可以调用
+>
+> System.out.println(Arrays.toString(a));
+
+##### 1.8.2 数组初始化以及匿名数组
+
+在Java钟，提供了一种创建数组对象并同时赋予初始化的简化书写方式，下面是一个例子
+
+```java
+int[] smallPrimes = {2,3,5,6,7,11};
+```
+
+请注意，在使用这种语句时，不需要调用new。
+
+甚至还可以初始化一个匿名的数组；
+
+```Java
+new int[]{17,19,23,31,37}
+```
+
+这种表示法将创建一个新数组并利用括号中提供的值进行初始化，数组的大小就是初始化的个数。使用这种语法可以在不创建新变量的情况下重新初始化一个数组。例如：
+
+```java
+smallPrimes = new int[]{17,19,23,31,37};
+```
+
+这是下列语句的简写形式：
+
+```java
+int[] anonymous = {17,19,23,31,37};
+smallPrimes = anonymous;
+```
+
+> 在Java钟，允许数组长度为0.在编下一个结果为数组的方法时，如果碰巧结果为空，则这种语法形式就显得非常有用。此时可以闯将一个长度为0的数组；
+>
+> new elementType[0]
+>
+> 注意，数组长度为0与null不同。
+
+##### 1.8.3 数组拷贝
+
+在Java中，允许将一个数组变量拷贝给另一个数组变量，这时，两个变量将引用同一个数组：
+
+```java
+int smallPrimes = {2,3,4,5,7,11}
+int[] luckyNumbers = smallPrinmes;
+luckyNumbers[s] = 11;	
+```
+
+如果希望将一个数组的所有值拷贝到一个新的数组中去，就要使用Arrays类的copyOf方法：
+
+```java
+int[] copiedLuckyNumbers = Arrays.copyOf(luckyNumbers,luckyNumbers.length);
+```
+
+第二个参数是新数组的长度，这个方法通常用来增加数组的大小：
+
+```java
+luckNumber = Arrays.copOf(luckyNumbers,2 * luckyNumbers.length);
+```
+
+如果数组元素是数值型，那么多余的元素将被赋值为0；如果数组元素是布尔型，则将赋值为false。相反，如果长度小于原始数组的长度，则只拷贝最前面的数据元素。
+
+##### 1.8.4 命令行参数
+
+每一个Java应用程序都有一个带String arg[]参数的main方法，这个参数表明main方法将接收一个字符串数组，也就是命令行参数。
+
+```java
+public class Message
+{
+    public static void main(String[] args)
+    {
+    	if( args.length == 0 || args[0].equals("-h"))
+            System.out.print("Hello,");
+        else if(args[0].equals("-g"))
+            System.out.print("Goodbye,");
+        for(int i = 1;i < args.length;i++)
+            System.out.print("" + args[i]);
+        System.out.println("!");
+            }
+}
+```
+
+如果使用下面这种形式运行这个程序；
+
+```java
+java Message -g cruel world	
+```
+
+args数组将包含下列内容：
+
+```java
+args[0]:"-g"
+args[1]:"cruel"
+args[2]:"world"
+```
+
+这个程序将显示下列信息：
+
+```java
+GoodBye，cruel world!
+```
+
+##### 1.8.5 数组排序
+
+要想对数值型数组进行排序，可以使用Arrays类中的sort方法：
+
+```java
+int[] a = new int[10000];
+...
+Arrays.sort(a)
+```
+
+这个方法使用了优化的快速排序算法。快速排序算法对于大多数数据集合来说都是效率比较高的。
+
+> java.util.Arrays 1.2
+
+* static String toString(type[] a) 5.0
+
+  返回包含a中数据元素的字符串，这些数据元素被放在括号内，并用逗号分隔开
+
+  参数：a   类型为int、lang、short、char、byte、boolean、float或double得数组。
+
+* static type copyOf(type[] a,int length) 6
+
+* static type copyOfRange(type[] a,int start, int end) 6
+
+  返回与a类型相同的一个数组，其长度为length或者end-start，数组元素为a的值。
+
+  参数：a			类型为int、long、short、char、byte、boolean、float或double的数组。
+
+  ​			start	  起始下标（包含这个值）。
+
+  ​			end		终止下标（不包含这个值）。这个值可能大于a.length，在这种情况下结果为0或false。
+
+  ​			length	拷贝的数据元素长度。如果length值大于a.length，结果为0或false；
+
+  否则，数组中只有前面length个数据元素的拷贝值
+
+* static void sort(type[] a)
+
+  采用优化的快速排序算法对数据进行排序
+
+  参数：a	 类型为int、long、short、char、byte、boolean、float或double的数组。
+
+* static int binarySearch(type[] a,type v)
+
+* static int binarySearch(type[] a, int start, int end, type v)  6
+
+  采用二分搜索算法查找值v。如果查找成功，则返回相应的下标值；否则，返回一个负数值r。-r-1是为了保持a有序v应插入的位置。
+
+  参数：a	 	 类型为int、long、short、char、byte、boolean、float或double的有序数列。
+
+  ​			start	起始下标（包含这个值）。
+
+  ​			end	 终止下标（不包含这个值）。
+
+  ​			v		  同a的数据元素类型相同的值。
+
+* static void fill(type[] a, type v)
+
+  将数组的所有数据元素值设置为v。
+
+  参数：a		类型为int、long、short、char、byte、boolean、float、或double的数组。
+
+  ​			v		与a数据源叔类型相同的一个值。
+
+* static boolean equals(type[] a,type[] b)
+
+  如果两个数组大小相同，并且下标相同的元素都对应相等，返回true。
+
+  参数：a、b	类型为int、long、short、char、byte、boolean、float或double的两个数组。
+
+##### 1.8.6 多维数组
+
+多维数组将使用下标访问数组元素，它适用于表示表格或者复杂的排列形式。
+
+声明二维数组：
+
+```java
+double[][] balances;
+```
+
+与一维数组一样，在调用new对多维数组进行初始化之前不呢个使用它
+
+```java
+balances = new double[NYEARS][NRATES];
+```
+
+如果知道数组元素，就可以不调用new，而直接使用简化的书写形式对多维数据进行初始化。例如：
+
+```java
+int[][] magicSquare =
+{
+    {16,3,2,13},
+    {5,10,11,8},
+    {9,6,7,12},
+    {1,15,14,1}
+};
+```
+
+一旦数组被初始化，就可以利用两个方括号访问每个元素，例如：
+
+```java
+balances[i][j]
+```
+
+> 提示：要想快速地打印一个二维数组的数据元素列表，可以调用：
+>
+> System.out.println(Arrays.deepToString(a));
+>
+> 输出格式为：
+>
+> {16,3,2,13},{5,10,11,8},{9,6,7,12},{1,15,14,1}
+
+##### 1.8.7 不规则数组
+
+示例：创建一个数组，把第i行第j列将存放“从i个数值中抽取j个数值”产生的结果。
+
+```java
+public class Test08 {
+    public static void main(String[] args) {
+
+        final int NMAX = 10;
+        //分配三角形数组
+        int[][] odds = new int[NMAX + 1][];
+        for (int n = 0; n <= NMAX;n++)
+            odds[n] = new int[n + 1];
+
+        //填充三角形数组
+        for (int n = 0; n < odds.length; n++)
+            for (int k = 0; k< odds[n].length; k++)
+            {
+                int lotteryOdds = 1;
+                for (int i = 1; i <= k; i++)
+                    lotteryOdds = lotteryOdds * (n -i + 1)/i;
+
+                odds[n][k] = lotteryOdds;
+            }
+             //打印三角形数组
+             for (int[] row : odds)
+             {
+                 for (int odd : row)
+                     System.out.printf("%4d",odd);
+                     System.out.println();
+
+             }
+
+
+    }
+}
+```
+
+```java
+   1
+   1   1
+   1   2   1
+   1   3   3   1
+   1   4   6   4   1
+   1   5  10  10   5   1
+   1   6  15  20  15   6   1
+   1   7  21  35  35  21   7   1
+   1   8  28  56  70  56  28   8   1
+   1   9  36  84 126 126  84  36   9   1
+   1  10  45 120 210 252 210 120  45  10   1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
